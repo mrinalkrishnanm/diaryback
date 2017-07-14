@@ -1,8 +1,10 @@
 class NotesController < ApplicationController
 	skip_before_filter :verify_authenticity_token
 
+  before_action :authenticate, except: [:show]
+
   def index
-    @notes = Note.where(created_at: (Date.today.beginning_of_month..Date.today.end_of_month))
+    @notes = current_user.notes.where(created_at: (Date.today.beginning_of_month..Date.today.end_of_month))
     render json: @notes, status: 200
   end
 
