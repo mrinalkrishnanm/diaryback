@@ -4,6 +4,7 @@ class NotesController < ApplicationController
   before_action :authenticate, except: [:show]
 
   def index
+    logger.debug current_user.notes
     @notes = current_user.notes.where(created_at: (Date.today.beginning_of_month..Date.today.end_of_month))
     render json: @notes, status: 200
   end
@@ -16,10 +17,10 @@ class NotesController < ApplicationController
   def create
     logger.debug params
     @note = Note.new(
-      entry: params[:entry]
+      entry: params[:entry],
+      user_id: current_user.id,
+      title: params[:title]
       )
-
-
 
     if @note.save
       params.each do |key,value|
@@ -38,7 +39,9 @@ class NotesController < ApplicationController
     else
       render @note.errors, status:422
     end
+
   end
+
 
   def other_user
     @note = Note.where('user_id = ?',params[:user_id])
