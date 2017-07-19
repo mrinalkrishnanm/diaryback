@@ -6,7 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
-
+/public/system/uploads
 # Ignore db config file
 /config/database.yml
 
@@ -14,3 +14,5 @@
 /log/*
 !/log/.keep
 /tmp
+
+
